@@ -1,7 +1,17 @@
 import {DatePicker, NavBar} from "antd-mobile";
 import './month.scss'
+import {useState} from "react";
+import classNames from "classnames";
 
 function Month() {
+
+    // 控制弹框的弹出与隐藏
+    const [dateVisible, setDateVisible] = useState(false)
+
+    const onConfirm = () => {
+        setDateVisible(false)
+    }
+
     return (
         <div className="monthlyBill">
             <NavBar className="nav" backArrow={false}>
@@ -10,12 +20,12 @@ function Month() {
             <div className="content">
                 <div className="header" >
                     {/* 时间切换区域 */}
-                    <div className="date" onClick={()=>{}}>
+                    <div className="date" onClick={()=>setDateVisible(true)}>
                         <span className="text">
                             2024 | 2月账单
                         </span>
                         {/* 思路: 根据弹框打开状态控制expand类名是否存在 */}
-                        <span className="arrow expand"></span>
+                        <span className={classNames('arrow', dateVisible && 'expand')} ></span>
                     </div>
                     {/* 统计区域 */}
                     <div className='twoLineOverview'>
@@ -37,7 +47,10 @@ function Month() {
                         className="kaDate"
                         tilte="记账日期"
                         precision="month"
-                        visible={false}
+                        onCancel={()=>setDateVisible(false)}
+                        onConfirm={onConfirm}
+                        onClose={() => setDateVisible(false)}
+                        visible={dateVisible}
                         max={new Date()}
                     />
                 </div>
