@@ -15,7 +15,7 @@ function Month() {
         // return 计算之后的值
         return _.groupBy(billList, (item)=> dayjs(item.date).format('YYYY | MM'))
     }, [billList])
-    console.log(monthGroup)
+    // console.log(monthGroup)
 
     const [selectedMonthList, setSelectedMonthList] = useState([])
 

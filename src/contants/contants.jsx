@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export const billListData = {
     pay: [
         {
@@ -75,3 +77,24 @@ export const billTypeToName = Object.keys(billListData)
     })
     return prev
 }, {})
+
+export const getOverview = (data = []) => {
+    return data.reduce(
+        (prev, item) => {
+            return {
+                ...prev,
+                data: item.date,
+                [item.type]: prev[item.type] + +item.money,
+            }
+        },
+        {pay: 0, income: 0, date: null}
+    )
+}
+
+export const getMonthOverview = (data, month) => {
+    // 某个月概率有多个账单
+    const billList = data.filter(item => {
+        return month === dayjs(item.date).get('month')
+    })
+    return getOverview(billList)
+}
