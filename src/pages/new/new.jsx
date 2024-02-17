@@ -39,7 +39,7 @@ function New() {
             useFor: useFor
         }
         await dispatch(addBillList(bill))
-        navigate('/')
+        navigate('/month')
     }
 
     return (

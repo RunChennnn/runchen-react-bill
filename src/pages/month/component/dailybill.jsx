@@ -1,50 +1,27 @@
 import classNames from "classnames";
-import {useMemo, useState} from "react";
+import {useState} from "react";
 import {billTypeToName} from "../../../contants/contants";
 import Icon from "../../../contants/icon";
 
 import './dailybill.scss'
+import OneLineOverview from "../../../components/OneLineOverview";
 
-function DailyBill({date, billList}) {
-    const dayRes = useMemo(() => {
-        // 计算单日统计
-        // 支出/收入/结余
-        const pay = billList.filter(item => item.type === 'pay').reduce((a, c) => a+c.money, 0)
-        const income = billList.filter(item => item.type === 'income').reduce((a, c) => a+c.money, 0)
-        return {
-            pay,
-            income,
-            total: pay+income
-        }
-    }, [billList])
+function DailyBill({dateText, overview, billList}) {
 
-    const [visible, setVisible] = useState(false)
+    const [expand, setExpand] = useState(true)
 
     return (
-            <div className={classNames('dailybill')}>
+            <div className={classNames('dailyBill', expand && 'expand')}>
             <div className="header">
-                <div className="dateIcon">
-                    <span className="date">{date}</span>
+                <div className="dateIcon" onClick={() => setExpand(!expand)}>
+                    <span className="date">{dateText}</span>
                     {/* expand 有这个类名 展开箭头朝上 */}
-                    <span className={classNames('arrow', visible && 'expand')} onClick={() => setVisible(!visible)}></span>
+                    <span className={classNames('arrow', expand && 'expand')}/>
                 </div>
-                <div className="oneLineOverview">
-                    <div className="pay">
-                        <span className="type">支出</span>
-                        <span className="money">{dayRes.pay.toFixed(2)}</span>
-                    </div>
-                    <div className="income">
-                        <span className="type">收入</span>
-                        <span className="money">{dayRes.income.toFixed(2)}</span>
-                    </div>
-                    <div className="balance">
-                        <span className="money">{dayRes.total.toFixed(2)}</span>
-                        <span className="type">结余</span>
-                    </div>
-                </div>
+                <OneLineOverview pay={overview.pay} income={overview.income}/>
             </div>
-            {/* 单日列表 */}
-            <div className="billList" style={{display: visible ? 'block' : 'none'}}>
+                {/* 单日列表 */}
+            <div className="billList">
                 {
                     billList.map(item => {
                         return (
