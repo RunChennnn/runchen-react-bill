@@ -93,6 +93,7 @@ function Month() {
                         onClose={onHideDate}
                         visible={visible}
                         max={new Date()}
+                        onConfirm={onDateChange}
                     />
                 </div>
                 {/* 单日列表统计 */}
